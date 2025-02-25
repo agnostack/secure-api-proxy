@@ -1,0 +1,44 @@
+service: secure-api-proxy
+frameworkVersion: "3"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    reloadHandler: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+
+functions:
+  proxy:
+    handler: handlers.proxy
+    events:
+      - http:
+          path: /agnoStack/{route+}
+          method: post
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:	
+      Type: 'AWS::ApiGateway::GatewayResponse'	
+      Properties:	
+        ResponseParameters:	
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"	
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"	
+        ResponseType: DEFAULT_4XX	
+        RestApiId:	
+          Ref: 'ApiGatewayRestApi'	
+    GatewayResponseDefault5XX:	
+      Type: 'AWS::ApiGateway::GatewayResponse'	
+      Properties:	
+        ResponseParameters:	
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"	
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"	
+        ResponseType: DEFAULT_5XX	
+        RestApiId:	
+          Ref: 'ApiGatewayRestApi'

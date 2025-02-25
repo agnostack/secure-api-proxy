@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "@agnostack/secure-api-proxy",
+  "version": "1.0.0",
+  "author": "agnoStack Dev <developers@agnostack.com> (https://agnostack.com)",
+  "owner": "agnoStack",
+  "description": "Please contact agnoStack via info@agnostack.com for any questions",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/agnostack/secure-api-proxy/tree/develop#readme",
+  "repository": "github:agnostack/secure-api-proxy",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "scripts": {
+    "deploy": "yarn serverless deploy",
+    "watch": "yarn serverless offline"
+  },
+  "dependencies": {
+    "@agnostack/verifyd": "latest"
+  },
+  "devDependencies": {
+    "serverless": "3.x",
+    "serverless-dotenv-plugin": "6.0.0",
+    "serverless-offline": "12.x"
+  }
+}
