@@ -12,6 +12,12 @@ const BASE_HEADERS = {
   'Access-Control-Allow-Credentials': true,
 }
 
+const filterHeaders = (headers) => (
+  Object.fromEntries(Object.entries(headers).filter(([key]) => (
+    key.toLowerCase().startsWith('x-')
+  )))
+)
+
 const proxy = async (event) => {
   let statusCode
   let body
@@ -24,8 +30,8 @@ const proxy = async (event) => {
     const url = `${BASE_API_PATH}/${event?.pathParameters?.route}`
     const options = {
       method: 'POST',
-      body: event?.body,
-      headers: event?.headers,
+      body: JSON.parse(event?.body),
+      headers: filterHeaders(event?.headers),
     }
 
     const [
