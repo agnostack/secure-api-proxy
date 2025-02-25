@@ -27,7 +27,7 @@ Enter values for `INTEGRATION_PUBLIC_KEY` and `BASE_API_PATH` given the values p
 yarn watch
 ```
 
-Post requests can then be made via `http://localhost:9000/dev/proxy/orders/12345`
+Post requests can then be made via `http://localhost:3000/dev/agnoStack/orders/12345`
 
 ## Deployment
 
@@ -45,7 +45,7 @@ All requests must contain the following request headers, provided from agnoStack
 - x-client-secret
 
 ```bash
-curl --location --request POST 'http://localhost:9000/dev/proxy/orders/12345' \
+curl --location --request POST 'http://localhost:3000/dev/agnoStack/orders/12345' \
 --header 'x-organization-id: YOUR_ORGANIZATION_ID' \
 --header 'x-client-id: YOUR_CLIENT_ID' \
 --header 'x-client-secret: YOUR_CLIENT_SECRET' \

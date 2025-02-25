@@ -27,7 +27,7 @@ functions:
     memorySize: 3008
     events:
       - http:
-          path: /proxy/{route+}
+          path: /agnoStack/{route+}
           method: post
 
 resources:
