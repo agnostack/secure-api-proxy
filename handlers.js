@@ -4,7 +4,7 @@ const {
   processVerificationResponse,
 } = require('@agnostack/verifyd')
 
-const { BASE_API_PATH, INTEGRATION_PUBLIC_KEY } = process.env
+const { BASE_API_PATH, INTEGRATION_PUBLIC_KEY, INTEGRATION_DISABLE_RECRYPTION } = process.env
 
 const BASE_HEADERS = {
   'Content-Type': 'application/json',
@@ -24,13 +24,13 @@ const proxy = async (event) => {
 
   try {
     const keysData = await getVerificationKeysData(INTEGRATION_PUBLIC_KEY)
-    const _prepareVerificationRequest = prepareVerificationRequest({ keysData })
-    const _processVerificationResponse = processVerificationResponse({ keysData })
+    const _prepareVerificationRequest = prepareVerificationRequest({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
+    const _processVerificationResponse = processVerificationResponse({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
 
     const url = `${BASE_API_PATH}/${event?.pathParameters?.route}`
     const options = {
       method: 'POST',
-      body: JSON.parse(event?.body),
+      body: JSON.parse(event?.body ?? '{}'),
       headers: filterHeaders(event?.headers),
     }
 
