@@ -6,9 +6,6 @@ plugins:
   - serverless-offline
 
 custom:
-  webpack:
-    packager: 'yarn'
-    includeModules: true
   serverless-offline:
     reloadHandler: true
 
