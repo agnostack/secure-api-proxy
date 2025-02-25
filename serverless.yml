@@ -1,0 +1,59 @@
+service: secure-api-proxy
+frameworkVersion: "3"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+custom:
+  webpack:
+    packager: 'yarn'
+    includeModules: true
+  serverless-offline:
+    reloadHandler: true
+    httpPort: 9000
+    lambdaPort: 9001
+    websocketPort: 9002
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  logRetentionInDays: 90
+
+functions:
+  proxy:
+    handler: handlers.proxy
+    memorySize: 3008
+    events:
+      - http:
+          path: /proxy/{route+}
+          method: post
+
+resources:
+  Resources:
+    ProxyLogGroup:
+      Type: AWS::Logs::LogGroup
+      UpdateReplacePolicy: Retain
+      DeletionPolicy: Retain
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-proxy
+        RetentionInDays: 90
+    GatewayResponseDefault4XX:	
+      Type: 'AWS::ApiGateway::GatewayResponse'	
+      Properties:	
+        ResponseParameters:	
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"	
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"	
+        ResponseType: DEFAULT_4XX	
+        RestApiId:	
+          Ref: 'ApiGatewayRestApi'	
+    GatewayResponseDefault5XX:	
+      Type: 'AWS::ApiGateway::GatewayResponse'	
+      Properties:	
+        ResponseParameters:	
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"	
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"	
+        ResponseType: DEFAULT_5XX	
+        RestApiId:	
+          Ref: 'ApiGatewayRestApi'
