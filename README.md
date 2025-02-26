@@ -1,4 +1,4 @@
-# Secure API Proxy
+# Secure API Proxy 🚀
 
 This repository is a sample repo for wrapping the agnoStack API with secure encryption.
 
