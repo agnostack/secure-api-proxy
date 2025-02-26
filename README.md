@@ -4,22 +4,33 @@ This repository is a sample repo for wrapping the agnoStack API with secure encr
 
 ---
 
-## Install
+## Prerequisites
+
+- Node.js (v18.20.0 or higher)
+- Yarn (or similar package manager)
+- nvm (optional)
 
 ```bash
-nvm use
+nvm install
+```
+
+```bash
+npm install yarn -g
+```
+
+## Install repo dependencies
+
+```bash
 yarn install
 ```
 
 ## Setup env vars
 
-Create a `.env` from the provided example.
+Populate `.env` with the provider values from agnoStack.
 
-```bash
-cp .env.example .env
-```
-
-Enter values for `INTEGRATION_PUBLIC_KEY` and `BASE_API_PATH` given the values provided from agnoStack.
+- API_CLIENT_ID
+- API_CLIENT_SECRET
+- INTEGRATION_PUBLIC_KEY
 
 ## Local testing
 
