@@ -27,7 +27,7 @@ Enter values for `INTEGRATION_PUBLIC_KEY` and `BASE_API_PATH` given the values p
 yarn watch
 ```
 
-Post requests can then be made via `http://localhost:3000/dev/agnoStack/orders/12345`
+Post requests can then be made via `http://localhost:3000/dev/agnostack/orders/12345`
 
 ## AWS Deployment
 
@@ -43,7 +43,7 @@ All requests must contain the following request headers, provided from agnoStack
 - x-providerstack-id
 
 ```bash
-curl --location --request POST 'http://localhost:3000/dev/agnoStack/orders/12345' \
+curl --location --request POST 'http://localhost:3000/dev/agnostack/orders/12345' \
 --header 'x-organization-id: YOUR_ORGANIZATION_ID' \
 --header 'x-providerstack-id: YOUR_PROVIDERSTACK_ID'
 ```
