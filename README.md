@@ -29,7 +29,7 @@ yarn watch
 
 Post requests can then be made via `http://localhost:3000/dev/agnoStack/orders/12345`
 
-## Deployment
+## AWS Deployment
 
 ```bash
 yarn deploy
@@ -41,13 +41,9 @@ All requests must contain the following request headers, provided from agnoStack
 
 - x-organization-id
 - x-providerstack-id
-- x-client-id
-- x-client-secret
 
 ```bash
 curl --location --request POST 'http://localhost:3000/dev/agnoStack/orders/12345' \
 --header 'x-organization-id: YOUR_ORGANIZATION_ID' \
---header 'x-client-id: YOUR_CLIENT_ID' \
---header 'x-client-secret: YOUR_CLIENT_SECRET' \
 --header 'x-providerstack-id: YOUR_PROVIDERSTACK_ID'
 ```

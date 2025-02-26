@@ -13,14 +13,21 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  environment:
+    BASE_API_PATH: https://api-dev.agnostack.io/integration/api
 
 functions:
   proxy:
     handler: handlers.proxy
     events:
       - http:
-          path: /agnoStack/{route+}
+          path: /agnostack/{route+}
           method: post
+          # TODO implement secure authorizer at the API gateway level
+          # authorizer:
+          #   name: proxyAuthorizer
+          #   scopes:
+          #     - https://xyz123.execute-api.us-east-1.amazonaws.com/api
 
 resources:
   Resources:

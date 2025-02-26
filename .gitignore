@@ -17,7 +17,7 @@ node_modules/
 # misc
 package-lock.json
 .DS_Store
-.env
+.env.local
 .serverless
 
 # local dev debugging
