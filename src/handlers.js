@@ -34,11 +34,11 @@ const proxy = async (event) => {
     const _prepareVerificationRequest = prepareVerificationRequest({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
     const _processVerificationResponse = processVerificationResponse({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
 
-    const url = `${BASE_API_PATH}/${event?.pathParameters?.route}`
-      console.log(`>>> > proxy > event?.body:`, event?.body)
-      console.log(`>>> > proxy > event?.headers:`, event?.headers)
-      console.log(`>>> > proxy > url:`, url)
-    const options = {
+    const [
+      requestPath,
+      requestOptions,
+      derivedSecretKey
+    ] = await _prepareVerificationRequest(`${BASE_API_PATH}/${event?.pathParameters?.route}`, {
       method: 'POST',
       body: JSON.parse(event?.body ?? '{}'),
       headers: {
@@ -46,13 +46,7 @@ const proxy = async (event) => {
         'X-Client-Id': API_CLIENT_ID,
         'X-Client-Secret': API_CLIENT_SECRET,
       },
-    }
-
-    const [
-      requestPath,
-      requestOptions,
-      derivedSecretKey
-    ] = await _prepareVerificationRequest(url, options) ?? []
+    }) ?? []
 
     const encryptedResponse = await fetch(requestPath, requestOptions).then((_response) => (
       _response.json()
