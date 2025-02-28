@@ -9,7 +9,7 @@ const {
   API_CLIENT_ID,
   API_CLIENT_SECRET,
   INTEGRATION_PUBLIC_KEY,
-  INTEGRATION_DISABLE_RECRYPTION,
+  INTEGRATION_DISABLE_RECRYPTION, // NOTE: this will not work unless running your own local BASE_API_PATH
 } = process.env
 
 const BASE_HEADERS = {
@@ -30,10 +30,14 @@ const proxy = async (event) => {
 
   try {
     const keysData = await getVerificationKeysData(INTEGRATION_PUBLIC_KEY)
+
     const _prepareVerificationRequest = prepareVerificationRequest({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
     const _processVerificationResponse = processVerificationResponse({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
 
     const url = `${BASE_API_PATH}/${event?.pathParameters?.route}`
+      console.log(`>>> > proxy > event?.body:`, event?.body)
+      console.log(`>>> > proxy > event?.headers:`, event?.headers)
+      console.log(`>>> > proxy > url:`, url)
     const options = {
       method: 'POST',
       body: JSON.parse(event?.body ?? '{}'),

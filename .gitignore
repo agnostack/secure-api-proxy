@@ -11,6 +11,8 @@ node_modules/
 # Optional npm cache directory
 .npm
 
+.nx
+
 # Yarn Integrity file
 .yarn-integrity
 
