@@ -40,7 +40,7 @@ yarn watch
 
 NOTE: this will run your local project via serverless offline AND also generate an ngrok URL that you can then use to access.
 
-Requests can then be made via `https://<<generated>>.ngrok.app/dev/agnostack/<<xyz-api-route>>` or `http://localhost:3000/dev/agnostack/<<xyz-api-route>>`
+Requests can then be made via `https://<<generated>>.ngrok.app/agnostack/<<xyz-api-route>>` or `http://localhost:3000/dev/agnostack/<<xyz-api-route>>`
 
 ## AWS Deployment
 
@@ -57,10 +57,10 @@ agnoStack API sample postman requests available via: https://agnostack.dev/postm
 All requests must contain the following request headers, provided from agnoStack.
 
 - X-Organization-Id
-- X-Providerstack-Id
+- X-Stack-Id
 
 ```bash
-curl --location --request POST 'http://localhost:3000/dev/agnostack/orders/12345' \
+curl --location --request POST 'https://<<generated>>.ngrok.app/agnostack/orders/12345' \
 --header 'X-Organization-Id: YOUR_ORGANIZATION_ID' \
---header 'X-Providerstack-Id: YOUR_PROVIDERSTACK_ID'
+--header 'X-Stack-Id: YOUR_STACK_ID'
 ```
