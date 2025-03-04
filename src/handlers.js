@@ -32,7 +32,6 @@ const proxy = async (event) => {
     const keysData = await getVerificationKeysData(INTEGRATION_PUBLIC_KEY)
 
     const _prepareVerificationRequest = prepareVerificationRequest({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
-    const _processVerificationResponse = processVerificationResponse({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
 
     const [
       requestPath,
@@ -48,12 +47,15 @@ const proxy = async (event) => {
       },
     }) ?? []
 
-    const encryptedResponse = await fetch(requestPath, requestOptions).then((_response) => (
-      _response.json()
-    ))
+    const { disableRecryption, response } = await fetch(requestPath, requestOptions).then(async (_response) => ({
+      disableRecryption: ((_response.status === 412) || (_response.status > 499)) ? true : INTEGRATION_DISABLE_RECRYPTION,
+      response: await _response.json()
+    }))
+
+    const _processVerificationResponse = processVerificationResponse({ keysData, disableRecryption })
 
     statusCode = 200
-    body = await _processVerificationResponse(encryptedResponse, derivedSecretKey)
+    body = await _processVerificationResponse(response, derivedSecretKey)
   } catch (error) {
     const message = 'Error proxying API request'
     console.error(message, error)
@@ -62,7 +64,7 @@ const proxy = async (event) => {
     body = { error: message }
   }
 
-  return { statusCode, body: JSON.stringify(body), headers: BASE_HEADERS }
+  return { statusCode, headers: BASE_HEADERS, body: JSON.stringify(body) }
 }
 
 module.exports = { proxy }
