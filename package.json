@@ -12,7 +12,7 @@
     "node": ">=18.x"
   },
   "scripts": {
-		"nx": "nx",
+    "nx": "nx",
     "deploy": "serverless deploy",
     "dev": "serverless offline",
     "watch": "nx run dev-ngrok --port=4000"
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "chalk": "4.1.2",
-		"nx": "latest",
-		"ngrok": "latest",
+    "nx": "latest",
+    "ngrok": "latest",
     "serverless": "3.x",
     "serverless-dotenv-plugin": "6.0.0",
     "serverless-offline": "12.x"
