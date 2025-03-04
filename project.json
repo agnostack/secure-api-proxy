@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "dev-ngrok": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx run @agnostack/secure-api-proxy:dev --param=\"port={args.port}\" --output-style=stream --nx-bail=true",
+          "node scripts/ngrok --port={args.port}"
+        ],
+        "color": true
+      }
+    }
+  }
+}
