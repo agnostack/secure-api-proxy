@@ -16,9 +16,9 @@
   integrity sha512-5ph4e5fcQNV5gxv1GG1OctkGmI/oOMHKRgsJeAI5OFjKS9kkkcZGCCCaMWkIbGh6aTJsE4OJWshkqg5NS5gIpA==
 
 "@agnostack/verifyd@latest":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@agnostack/verifyd/-/verifyd-2.3.1.tgz#483f5ba4f4fd376af3548e67eb902b0ad49b9102"
-  integrity sha512-A/+2RJHJehNmr26/KvFcO7KPy8pHhoyhPbRScNz+23Sm8iCxShtB80CNViqAbQuk/YKjujm4KVFs2h1erBo8fg==
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@agnostack/verifyd/-/verifyd-2.3.3.tgz#1d16191b03ab374c90eeeccd8930463e51d1c762"
+  integrity sha512-jQ/I9JcD8ZSu24V72nrCSxV/f0Me4Klg/7fZyJcFngVurl+1t9dew4x/wMv8UpUsA2G2nuD81gTrtlsfax/DuA==
   dependencies:
     browser-monads-ts "2.0.1"
     isomorphic-webcrypto "2.3.8"

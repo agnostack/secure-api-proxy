@@ -4,14 +4,17 @@ const ngrok = require('ngrok')
 
 const { parseEnvData } = require('@agnostack/env')
 
-const { params } = parseEnvData()
+const getNgrok = async (_addr = 8000, props) => {
+  const { params } = parseEnvData()
 
-const getNgrok = async (_addr = 8000) => {
-  const addr = params.addr || params.port || params.PORT || _addr // port or network address
+  const addr = params.port || params.PORT || _addr // port or network address
+  const subdomain = params.NGROK_SUBDOMAIN || params.SUBDOMAIN
 
   const url = await ngrok.connect({
+    ...subdomain && { subdomain },
     proto: 'http', // http|tcp|tls, defaults to http
     addr,
+    ...props,
     ...params,
   })
 
