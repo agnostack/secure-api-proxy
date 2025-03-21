@@ -11,14 +11,14 @@
     es5-ext "^0.10.47"
 
 "@agnostack/env@latest":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@agnostack/env/-/env-1.2.4.tgz#13ef51efceb83f25dd37e10a6109dfa10d66e17b"
-  integrity sha512-5ph4e5fcQNV5gxv1GG1OctkGmI/oOMHKRgsJeAI5OFjKS9kkkcZGCCCaMWkIbGh6aTJsE4OJWshkqg5NS5gIpA==
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@agnostack/env/-/env-1.2.5.tgz#5907d0b05e5ba8b3fefaacfd42ebcb2d79843ea6"
+  integrity sha512-XwMppggmQGZimafHBJqO6NprwApyOsGIHmFD7phLxJpz3Fb2SLgioZ7DucUMW6IlnsfXtG/FcvBJQWGwz0IBQg==
 
 "@agnostack/verifyd@latest":
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/@agnostack/verifyd/-/verifyd-2.3.3.tgz#1d16191b03ab374c90eeeccd8930463e51d1c762"
-  integrity sha512-jQ/I9JcD8ZSu24V72nrCSxV/f0Me4Klg/7fZyJcFngVurl+1t9dew4x/wMv8UpUsA2G2nuD81gTrtlsfax/DuA==
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/@agnostack/verifyd/-/verifyd-2.3.5.tgz#153ba5d790f3ae1170acfab3cc0a35c84c4c048b"
+  integrity sha512-rvjkqmvih36g7YW87UlMVujjMIfqmA1ErJoy11PSQdGgVovc8ybvp18dExjtHyQ6ynbzrqAqYlIBNONz3/YEZw==
   dependencies:
     browser-monads-ts "2.0.1"
     isomorphic-webcrypto "2.3.8"
