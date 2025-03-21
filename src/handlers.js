@@ -19,7 +19,7 @@ const BASE_HEADERS = {
 }
 
 const filterHeaders = (headers) => (
-  Object.fromEntries(Object.keys(headers).filter((key) => (
+  Object.fromEntries(Object.entries(headers).filter(([key]) => (
     key?.toLowerCase?.().startsWith?.('x-') ?? false
   )))
 )
