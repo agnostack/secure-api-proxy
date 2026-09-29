@@ -6,6 +6,11 @@ plugins:
   - serverless-offline
 
 custom:
+  dotenv:
+    path:
+      - .env
+      - .env.local
+    variableExpansion: false
   serverless-offline:
     reloadHandler: true
     httpPort: ${param:port}
