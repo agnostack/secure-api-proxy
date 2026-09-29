@@ -8,8 +8,9 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/agnostack/secure-api-proxy/tree/develop#readme",
   "repository": "github:agnostack/secure-api-proxy",
+  "packageManager": "pnpm@9.15.4",
   "engines": {
-    "node": ">=18.x"
+    "node": ">=22.x"
   },
   "scripts": {
     "nx": "nx",
@@ -27,6 +28,6 @@
     "ngrok": "latest",
     "serverless": "3.x",
     "serverless-dotenv-plugin": "6.0.0",
-    "serverless-offline": "12.x"
+    "serverless-offline": "13.x"
   }
 }
