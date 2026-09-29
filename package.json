@@ -14,8 +14,8 @@
   },
   "scripts": {
     "nx": "nx",
-    "deploy": "serverless deploy",
-    "dev": "serverless offline",
+    "deploy": "node scripts/sam.js deploy",
+    "dev": "node scripts/sam.js local",
     "watch": "nx run dev-ngrok --port=4000"
   },
   "dependencies": {
@@ -25,9 +25,6 @@
   "devDependencies": {
     "chalk": "4.1.2",
     "nx": "latest",
-    "ngrok": "latest",
-    "serverless": "3.x",
-    "serverless-dotenv-plugin": "6.0.0",
-    "serverless-offline": "13.x"
+    "ngrok": "latest"
   }
 }
