@@ -6,8 +6,11 @@ const {
 
 const {
   BASE_API_PATH,
-  API_CLIENT_ID,
-  API_CLIENT_SECRET,
+  INTEGRATION_API_KEY,
+  INTEGRATION_ORGANIZATION_ID,
+  INTEGRATION_GROUP_ID,
+  INTEGRATION_PROVIDERSTACK_ID,
+  INTEGRATION_CONNECTION_ID,
   INTEGRATION_PUBLIC_KEY,
   INTEGRATION_DISABLE_RECRYPTION, // NOTE: this will not work unless running your own local BASE_API_PATH
 } = process.env
@@ -18,17 +21,43 @@ const BASE_HEADERS = {
   'Access-Control-Allow-Credentials': true,
 }
 
+const SAVED_HEADERS = {
+  'X-Api-Key': INTEGRATION_API_KEY,
+  'X-Organization-Id': INTEGRATION_ORGANIZATION_ID,
+  'X-Group-Id': INTEGRATION_GROUP_ID,
+  'X-Providerstack-Id': INTEGRATION_PROVIDERSTACK_ID,
+  'X-Connection-Id': INTEGRATION_CONNECTION_ID,
+}
+
+const TARGET_HEADERS = ['x-connection-id', 'x-providerstack-id']
+
 const filterHeaders = (headers) => (
   Object.fromEntries(Object.entries(headers).filter(([key]) => (
     key?.toLowerCase?.()?.startsWith?.('x-') ?? false
   )))
 )
 
+const addSavedHeaders = (headers) => {
+  const sentKeys = Object.keys(headers).map((key) => key.toLowerCase())
+  const sentTarget = TARGET_HEADERS.some((key) => sentKeys.includes(key))
+
+  const savedHeaders = Object.entries(SAVED_HEADERS).filter(([key, value]) => (
+    value &&
+    !sentKeys.includes(key.toLowerCase()) &&
+    !(sentTarget && TARGET_HEADERS.includes(key.toLowerCase()))
+  ))
+
+  return { ...Object.fromEntries(savedHeaders), ...headers }
+}
+
 const proxy = async (event) => {
   let statusCode
   let body
 
   try {
+    const query = new URLSearchParams(event?.queryStringParameters ?? {}).toString()
+    const { origin, pathname, search } = new URL(`${BASE_API_PATH}/${event?.pathParameters?.route}${query ? `?${query}` : ''}`)
+
     const keysData = await getVerificationKeysData(INTEGRATION_PUBLIC_KEY)
 
     const _prepareVerificationRequest = prepareVerificationRequest({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
@@ -37,25 +66,21 @@ const proxy = async (event) => {
       requestPath,
       requestOptions,
       derivedSecretKey
-    ] = await _prepareVerificationRequest(`${BASE_API_PATH}/${event?.pathParameters?.route}`, {
-      method: 'POST',
-      body: JSON.parse(event?.body ?? '{}'),
-      headers: {
-        ...filterHeaders(event?.headers),
-        'X-Client-Id': API_CLIENT_ID,
-        'X-Client-Secret': API_CLIENT_SECRET,
-      },
+    ] = await _prepareVerificationRequest(pathname, {
+      method: event?.httpMethod,
+      body: event?.body ? JSON.parse(event.body) : undefined,
+      headers: addSavedHeaders(filterHeaders(event?.headers ?? {})),
     }) ?? []
 
-    const { disableRecryption, response } = await fetch(requestPath, requestOptions).then(async (_response) => ({
-      disableRecryption: ((_response.status === 412) || (_response.status > 499)) ? true : INTEGRATION_DISABLE_RECRYPTION,
-      response: await _response.json()
-    }))
+    const response = await fetch(`${origin}${requestPath}${search}`, requestOptions)
+    const responseBody = await response.json()
 
-    const _processVerificationResponse = processVerificationResponse({ keysData, disableRecryption })
+    const _processVerificationResponse = processVerificationResponse({ keysData, disableRecryption: INTEGRATION_DISABLE_RECRYPTION })
 
-    statusCode = 200
-    body = await _processVerificationResponse(response, derivedSecretKey)
+    statusCode = response.status
+    body = Array.isArray(responseBody)
+      ? await _processVerificationResponse(responseBody, derivedSecretKey)
+      : responseBody
   } catch (error) {
     const message = 'Error proxying API request'
     console.error(message, error)

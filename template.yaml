@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: agnoStack secure API proxy
+
+Parameters:
+  BaseApiPath:
+    Type: String
+    Default: ''
+  IntegrationPublicKey:
+    Type: String
+    Default: ''
+  IntegrationApiKey:
+    Type: String
+    Default: ''
+    NoEcho: true
+  IntegrationOrganizationId:
+    Type: String
+    Default: ''
+  IntegrationGroupId:
+    Type: String
+    Default: ''
+  IntegrationConnectionId:
+    Type: String
+    Default: ''
+  IntegrationProviderstackId:
+    Type: String
+    Default: ''
+  IntegrationDisableRecryption:
+    Type: String
+    Default: ''
+
+Resources:
+  ProxyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      DefinitionBody:
+        openapi: '3.0.1'
+        info:
+          title: !Ref AWS::StackName
+          version: '1.0'
+        paths:
+          /agnostack/{route+}:
+            x-amazon-apigateway-any-method:
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                httpMethod: POST
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProxyFunction.Arn}/invocations
+      GatewayResponses:
+        DEFAULT_4XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+        DEFAULT_5XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+
+  ProxyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/handlers.proxy
+      Runtime: nodejs22.x
+      Timeout: 6
+      Environment:
+        Variables:
+          BASE_API_PATH: !Ref BaseApiPath
+          INTEGRATION_PUBLIC_KEY: !Ref IntegrationPublicKey
+          INTEGRATION_API_KEY: !Ref IntegrationApiKey
+          INTEGRATION_ORGANIZATION_ID: !Ref IntegrationOrganizationId
+          INTEGRATION_GROUP_ID: !Ref IntegrationGroupId
+          INTEGRATION_CONNECTION_ID: !Ref IntegrationConnectionId
+          INTEGRATION_PROVIDERSTACK_ID: !Ref IntegrationProviderstackId
+          INTEGRATION_DISABLE_RECRYPTION: !Ref IntegrationDisableRecryption
+      Events:
+        Proxy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ProxyApi
+            Path: /agnostack/{route+}
+            Method: ANY
