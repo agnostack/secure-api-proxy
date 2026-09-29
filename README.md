@@ -6,8 +6,8 @@ This repository is a sample repo for wrapping the agnoStack API with secure encr
 
 ## Prerequisites
 
-- Node.js (v18.20.0 or higher)
-- Yarn (or similar package manager)
+- Node.js (v22 or higher)
+- pnpm (or similar package manager)
 - nvm (optional)
 
 ```bash
@@ -15,52 +15,64 @@ nvm install
 ```
 
 ```bash
-npm install yarn -g
+npm install pnpm -g
 ```
 
 ## Install repo dependencies
 
 ```bash
-yarn install
+pnpm install
 ```
 
 ## Setup env vars
 
-Populate `.env` with the provider values from agnoStack.
+`.env` holds the shared settings, such as `BASE_API_PATH` (the API address, ending in `/integration/api`). Change it there to call a different API.
 
-- API_CLIENT_ID
-- API_CLIENT_SECRET
+Copy `.env.local.example` to `.env.local` and populate it with your values from agnoStack.
+
 - INTEGRATION_PUBLIC_KEY
+
+Optionally, the request headers can also be set here instead of being sent with every request. A header sent with the request wins.
+
+- INTEGRATION_API_KEY (`X-Api-Key`)
+- INTEGRATION_ORGANIZATION_ID (`X-Organization-Id`)
+- INTEGRATION_GROUP_ID (`X-Group-Id`)
+- INTEGRATION_CONNECTION_ID (`X-Connection-Id`)
+- INTEGRATION_PROVIDERSTACK_ID (`X-Providerstack-Id`)
+
+If a request sends `X-Connection-Id` or `X-Providerstack-Id`, neither of those two saved values is used.
 
 ## Local testing
 
 ```bash
-yarn watch
+pnpm run watch
 ```
 
 NOTE: this will run your local project via serverless offline AND also generate an ngrok URL that you can then use to access.
 
-Requests can then be made via `https://<<generated>>.ngrok.app/dev/agnostack/<<xyz-api-route>>` or `http://localhost:3000/dev/agnostack/<<xyz-api-route>>`
+Requests can then be made via `https://<<generated>>.ngrok.app/dev/agnostack/<<xyz-api-route>>` or `http://localhost:4000/dev/agnostack/<<xyz-api-route>>`
 
 ## AWS Deployment
 
 ```bash
-yarn deploy
+pnpm run deploy
 ```
-
-## Postman Collection
-
-agnoStack API sample postman requests available via: https://agnostack.dev/postman_collection.json
 
 ## Making requests
 
-All requests must contain the following request headers, provided from agnoStack.
+All requests must contain the following request headers, provided from agnoStack, unless they are set in `.env.local`.
 
+- X-Api-Key
 - X-Organization-Id
-- X-Stack-Id
+- X-Group-Id
+- X-Connection-Id or X-Providerstack-Id
+
+The request method (GET, POST, PUT) is passed through to the API.
 
 ```bash
-curl --location --request POST 'https://<<generated>>.ngrok.app/dev/agnostack/orders/12345' \
+curl --location --request GET 'https://<<generated>>.ngrok.app/dev/agnostack/order/12345' \
+--header 'X-Api-Key: YOUR_API_KEY' \
 --header 'X-Organization-Id: YOUR_ORGANIZATION_ID' \
---header 'X-Stack-Id: YOUR_STACK_ID'
+--header 'X-Group-Id: YOUR_GROUP_ID' \
+--header 'X-Connection-Id: YOUR_CONNECTION_ID'
 ```
